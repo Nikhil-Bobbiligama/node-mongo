@@ -1,27 +1,49 @@
 var express = require('express')
 var router = express.Router()
 var Subscriber = require('../database/models/sub');
-// const sub = require('../database/models/sub');
-router.put('/', async function (req, res) {
-    const subscribers = await Subscriber.find();
+var Department = require('../database/models/department');
+var Student = require('../database/models/student');
+const { request } = require('express');
 
-    console.log(subscribers);
-    res.send("k")
+router.get('/', async function (req, res) {
+    const departments = await Department.find();
+    const students = await Student.find();
+    res.status(200).json(departments)
 });
-router.get('/', async (req, res) => {
-    const subscriber = new Subscriber({
-        name: "req.body.name1",
-        subscribedChannel: "1req.body.subscribedChannel",
-        test: "test"
+
+router.post('/', async (req, res) => {
+    const department = new Department({
+        name: req.body.name,
+        strength: req.body.strength,
+        hod: req.body.hod
     })
 
     try {
-        const newSubscriber = await subscriber.save()
-        res.status(201).json(newSubscriber)
+        const newDepartment = await department.save()
+        res.status(201).json(newDepartment)
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    var req_id = req.params.id;
+    result = await Department.findByIdAndDelete(req_id);
+    try {
+        res.status(201).json({ "mssg": "deleted" })
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
 })
 
+router.patch('/', async (req, res) => {
+    var req_id = req.body;
+    result = await Department.findByIdAndDelete(req_id);
+    try {
+        res.status(201).json({ "mssg": "deleted" })
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+})
 
 module.exports = { router }
