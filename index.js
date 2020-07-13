@@ -3,12 +3,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const db_connect = require('./database/db_connector');
 const { connection } = require('mongoose');
+require('dotenv').config();
 const department_route = require('./routes/department');
 const student_route = require('./routes/student');
 app.use(bodyParser.json());
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/initial_db', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('connected to database'))
