@@ -18,8 +18,8 @@ router.get('/complete-info', async function (req, res) {
         const students = await Student.find();
         // res.status(200).json(departments)
         console.log(req.query.id);
-        departments_records = await departments.find({ "_id": ObjectID(req.query.id) }).populate('students').exec();;
-        console.log(departments_records.students);
+        departments_records = await Student.find({ "_id": ObjectID(req.query.id) }).populate('department_id').exec();
+        // console.log(departments_records.students);
         res.status(200).json(departments_records);
     }
     catch (err) {

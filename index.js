@@ -8,7 +8,9 @@ const department_route = require('./routes/department');
 const student_route = require('./routes/student');
 app.use(bodyParser.json());
 const mongoose = require('mongoose')
-
+// console.log( typeof(process.env.config));
+// config = JSON.parse(process.env.config);
+// console.log(config['help']);
 mongoose.connect(process.env.MONGO_CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
