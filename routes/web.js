@@ -4,6 +4,7 @@ var Subscriber = require('../database/models/sub');
 var Department = require('../database/models/department');
 var Student = require('../database/models/student');
 const { request } = require('express');
+const { ObjectID } = require('mongodb');
 
 router.get('/', async function (req, res) {
     const departments = await Department.find();
@@ -36,11 +37,12 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-router.patch('/', async (req, res) => {
-    var req_id = req.body;
-    result = await Department.findByIdAndDelete(req_id);
+router.patch('/:id', async (req, res) => {
+    var req_id = req.params.id;
+    var req_body = req.body;
+    result = await Department.updateOne({ _id: ObjectID(req_id) }, { $set: req_body });
     try {
-        res.status(201).json({ "mssg": "deleted" })
+        res.status(201).json({ "mssg": "updated" })
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
